@@ -1,0 +1,16 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "sbc"
+compatibility_date = "2024-11-27"
+compatibility_flags = ["nodejs_compat_v2"]
+main = "./dist/_worker.js/index.js"
+assets = { directory = "./dist", binding = "ASSETS" }
+
+# Workers Logs
+# Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
+# Configuration: https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs
+[observability]
+enabled = true
+
+[[kv_namespaces]]
+binding = "sb"
+id = "d0e576b655b84a8683038f4fd3245057"
