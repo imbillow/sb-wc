@@ -22,7 +22,7 @@ A modern web application for converting subscription formats, built with Astro a
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/sbc.git
+git clone https://github.com/imbillow/sbc.git
 cd sbc
 ```
 
