@@ -10,6 +10,10 @@ assets = { directory = "./dist", binding = "ASSETS" }
 # Configuration: https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs
 [observability]
 enabled = true
+head_sampling_rate = 1
+
+[observability.logs]
+invocation_logs = false
 
 [placement]
 mode = "smart"
