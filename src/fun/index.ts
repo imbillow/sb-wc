@@ -8,23 +8,21 @@ type SBCBody = {
 
 async function sbc(body: SBCBody) {
     try {
-        const mergedProfile = JSON.parse(body.profile);
+        const mergedProfile = body.profile ? JSON.parse(body.profile) : {};
         if (!mergedProfile.outbounds) {
             mergedProfile.outbounds = [];
         }
 
-        for (const profileUrl of body.subs) {
+        const xs = body.subs.map(async (sub) => {
             const response = await fetch(profileUrl);
             const profile = await response.json();
             /* 			Buffer.from(profile, 'base64').toString('utf8') */
             console.log(`Fetched profile from: ${profileUrl} ${profile.outbounds}`);
-
-            const outbounds = (profile.outbounds || [])
+            return (profile.outbounds || [])
                 .filter(outbound => !['urltest', 'selector', 'direct', 'dns', 'block'].includes(outbound.type));
-            mergedProfile.outbounds = mergedProfile.outbounds.concat(outbounds);
-        }
+        })
 
-        // Deduplicate outbounds
+        mergedProfile.outbounds = mergedProfile.outbounds.concat((await Promise.all(xs)).flat());
         const uniqueOutbounds = new Map(mergedProfile.outbounds.map(outbound => [outbound.server, outbound]));
         mergedProfile.outbounds = Array.from(uniqueOutbounds.values());
 

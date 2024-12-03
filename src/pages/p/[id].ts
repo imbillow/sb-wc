@@ -7,7 +7,9 @@ export const GET: APIRoute = async ({ params, request, locals, site }) => {
 
     try {
         const text: SBCBody = await sb.get(id);
-        return await sbc(text);
+        const json = JSON.parse(text);
+        console.log("sbc: ", json);
+        return await sbc(json);
     } catch (e) {
         return new Response('', { status: 404 });
     }
