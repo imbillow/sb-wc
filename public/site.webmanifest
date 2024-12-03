@@ -1,6 +1,6 @@
 {
-  "name": "SBC - Subscription Converter",
-  "short_name": "SBC",
+  "name": "sb-wc - Subscription Converter",
+  "short_name": "sb-wc",
   "description": "Professional subscription conversion tool supporting various formats including Clash, Surge, Quantumult X, and more.",
   "start_url": "/",
   "display": "standalone",

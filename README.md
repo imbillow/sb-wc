@@ -1,4 +1,4 @@
-# SBC - Subscription Converter
+# sb-wc - Subscription Converter
 
 A modern web application for converting subscription formats, built with Astro and Vue.js.
 
@@ -22,8 +22,8 @@ A modern web application for converting subscription formats, built with Astro a
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/imbillow/sbc.git
-cd sbc
+git clone https://github.com/imbillow/sb-wc.git
+cd sb-wc
 ```
 
 2. Install dependencies:

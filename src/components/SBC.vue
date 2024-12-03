@@ -2,7 +2,7 @@
   <div id="container" class="min-h-screen bg-gradient-to-br from-sky-50 to-white dark:from-gray-900 dark:to-gray-800">
     <div class="container mx-auto p-4 sm:p-8 max-w-5xl">
       <div class="flex justify-between items-center mb-6 sm:mb-8">
-        <h1 class="text-3xl sm:text-4xl font-bold text-sky-900 dark:text-sky-100">SBC</h1>
+        <h1 class="text-3xl sm:text-4xl font-bold text-sky-900 dark:text-sky-100">sb-wc</h1>
         <div class="relative">
           <select 
             v-model="theme" 
