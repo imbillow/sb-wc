@@ -45,7 +45,9 @@ const profile = ref('')
 const filename = ref('')
 const url = ref('')
 
-function copy() {
+async function copy() {
+  await navigator.clipboard.writeText(url.value);
+  alert('copied');
 }
 
 function download() {

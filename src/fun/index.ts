@@ -13,18 +13,21 @@ async function sbc(body: SBCBody) {
             mergedProfile.outbounds = [];
         }
 
-        const xs = body.subs.map(async (sub) => {
-            const response = await fetch(profileUrl);
+        let xs = body.subs.map(async (sub) => {
+            const response = await fetch(sub);
             const profile = await response.json();
             /* 			Buffer.from(profile, 'base64').toString('utf8') */
-            console.log(`Fetched profile from: ${profileUrl} ${profile.outbounds}`);
+            console.log(`Fetched profile from: ${sub} ${profile.outbounds}`);
             return (profile.outbounds || [])
                 .filter(outbound => !['urltest', 'selector', 'direct', 'dns', 'block'].includes(outbound.type));
         })
 
-        mergedProfile.outbounds = mergedProfile.outbounds.concat((await Promise.all(xs)).flat());
-        const uniqueOutbounds = new Map(mergedProfile.outbounds.map(outbound => [outbound.server, outbound]));
-        mergedProfile.outbounds = Array.from(uniqueOutbounds.values());
+        xs = (await Promise.all(xs)).flat();
+        xs = mergedProfile.outbounds.concat(xs);
+        console.log(xs);
+        const xsMap = new Map(xs.map(x => [`${x.server}:${x.server_port}`, x]));
+        console.log(xsMap);
+        mergedProfile.outbounds = Array.from(xsMap.values());
 
         // Send the merged profile as a downloadable file
         const fileBlob = new Blob([JSON.stringify(mergedProfile, null, 2)], { type: 'application/octet-stream' });
@@ -36,7 +39,7 @@ async function sbc(body: SBCBody) {
         });
     } catch (e) {
         console.log(e);
-        return new Response('', { status: 500 });
+        return new Response(e.message, { status: 500 });
     }
 
 }
@@ -58,8 +61,12 @@ async function digest(text, digest_name = 'SHA-256') {
     return hexString;
 }
 
+
+const isDev = import.meta.env.DEV;
+
 export {
     sbc,
     digest,
-    type SBCBody
+    type SBCBody,
+    isDev,
 }
