@@ -146,9 +146,6 @@ const subsText = ref('')
 const subs = ref([])
 const subsError = ref('')
 
-// URL validation regex
-const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
-
 // Computed property for overall form validity
 const isFormValid = computed(() => {
   validateProfile()
@@ -181,7 +178,14 @@ function validateSubs() {
   }
 
   const urls = subsText.value.split('\n').filter(url => url.trim())
-  const invalidUrls = urls.filter(url => !urlRegex.test(url.trim()))
+  const invalidUrls = urls.filter(url => {
+    try {
+      new URL(url.trim())
+      return false
+    } catch (e) {
+      return true
+    }
+  })
 
   if (invalidUrls.length > 0) {
     subsError.value = `Invalid URL format: ${invalidUrls.join(', ')}`
