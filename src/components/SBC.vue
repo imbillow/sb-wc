@@ -5,9 +5,9 @@
         <h1 class="text-3xl sm:text-4xl font-bold text-sky-900 dark:text-sky-100">SBC</h1>
         <div class="relative">
           <select 
-            v-model="themeMode" 
+            v-model="theme" 
             class="appearance-none rounded-lg bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 py-2 pl-9 pr-8 text-sm focus:border-sky-500 focus:ring-sky-500"
-            @change="handleThemeModeChange"
+            @change="handleThemeChange"
           >
             <option value="system">System</option>
             <option value="light">Light</option>
@@ -15,11 +15,11 @@
           </select>
           <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
             <!-- System icon -->
-            <svg v-if="themeMode === 'system'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg v-if="theme === 'system'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             <!-- Sun icon -->
-            <svg v-else-if="themeMode === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg v-else-if="theme === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
             <!-- Moon icon -->
@@ -91,60 +91,49 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { digest } from '../fun';
 
 const subs = ref([])
 const profile = ref('')
 const filename = ref('')
 const url = ref('')
-const isDark = ref(false)
-const themeMode = ref('system')
+const theme = ref('system')
+
+// Computed property to determine if dark mode should be active
+const isDarkMode = computed(() => {
+  if (theme.value === 'system') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+  }
+  return theme.value === 'dark'
+})
 
 onMounted(() => {
-  // Check for system dark mode preference
-  const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  
-  // Get saved theme mode preference
-  const savedThemeMode = localStorage.getItem('themeMode') || 'system'
-  themeMode.value = savedThemeMode
-  
-  // Set initial dark mode based on theme mode
-  if (savedThemeMode === 'system') {
-    isDark.value = darkModeMediaQuery.matches
-  } else {
-    isDark.value = savedThemeMode === 'dark'
-  }
+  // Get saved theme preference
+  const savedTheme = localStorage.getItem('theme') || 'system'
+  theme.value = savedTheme
   
   // Apply initial theme
   updateTheme()
   
   // Listen for system theme changes
-  darkModeMediaQuery.addEventListener('change', (e) => {
-    if (themeMode.value === 'system') {
-      isDark.value = e.matches
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (theme.value === 'system') {
       updateTheme()
     }
   })
 })
 
 function updateTheme() {
-  if (isDark.value) {
+  if (isDarkMode.value) {
     document.documentElement.classList.add('dark')
   } else {
     document.documentElement.classList.remove('dark')
   }
 }
 
-function handleThemeModeChange() {
-  localStorage.setItem('themeMode', themeMode.value)
-  
-  if (themeMode.value === 'system') {
-    isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
-  } else {
-    isDark.value = themeMode.value === 'dark'
-  }
-  
+function handleThemeChange() {
+  localStorage.setItem('theme', theme.value)
   updateTheme()
 }
 
