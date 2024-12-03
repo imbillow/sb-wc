@@ -7,15 +7,19 @@ import sitemap from '@astrojs/sitemap';
 
 import tailwind from '@astrojs/tailwind';
 
+import vue from '@astrojs/vue';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://sbc.hoshinoaya.workers.dev',
   output: 'server',
+  prefetch: true,
 
   adapter: cloudflare({
     platformProxy: {
       enabled: true
-    }
+    },
+    imageService: 'cloudflare'
   }),
 
   integrations: [sitemap({
@@ -27,5 +31,5 @@ export default defineConfig({
         zh: 'zh-CN',
       },
     },
-  }), tailwind()]
+  }), tailwind(), vue({ devtools: true })],
 });

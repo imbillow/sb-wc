@@ -13,11 +13,16 @@
     "@astrojs/cloudflare": "^11.2.0",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.2",
+    "@astrojs/vue": "^4.5.3",
+    "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.2.0",
     "astro": "^4.16.16",
-    "tailwindcss": "^3.4.15"
+    "tailwindcss": "^3.4.15",
+    "vue": "^3.5.13"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241127.0",
+    "@tailwindcss/forms": "^0.5.9",
     "wrangler": "^3.91.0"
   }
 }
