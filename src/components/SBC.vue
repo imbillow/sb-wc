@@ -36,18 +36,43 @@
       </div>
       <main class="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
         <section class="p-4 sm:p-8">
-          <form method="post" class="space-y-6">
+          <form method="post" class="space-y-6" @submit.prevent="handleSubmit">
             <section class="grid grid-cols-1 sm:grid-cols-[140px_minmax(0,_1fr)] lg:grid-cols-[160px_minmax(0,_1fr)] gap-2 sm:gap-6">
               <label for="profile" class="text-gray-700 dark:text-gray-300 font-medium sm:pt-2">Profile:</label>
-              <textarea id="profile" class="w-full min-h-[100px] rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:border-sky-500 focus:ring-sky-500" v-model.trim="profile"></textarea>
+              <div class="space-y-1">
+                <textarea 
+                  id="profile" 
+                  class="w-full min-h-[100px] rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:border-sky-500 focus:ring-sky-500" 
+                  :class="{ 'border-red-500 dark:border-red-500': profileError }"
+                  v-model.trim="profile"
+                  @input="validateProfile"
+                ></textarea>
+                <p v-if="profileError" class="text-sm text-red-500">{{ profileError }}</p>
+              </div>
 
               <label for="subs" class="text-gray-700 dark:text-gray-300 font-medium sm:pt-2">Subs:</label>
-              <textarea id="subs" class="w-full min-h-[100px] rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:border-sky-500 focus:ring-sky-500"
-                @change="e => subs = e.target.value.trim().split('\n').filter(x => x.trim() !== '')"></textarea>
+              <div class="space-y-1">
+                <textarea 
+                  id="subs" 
+                  class="w-full min-h-[100px] rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:border-sky-500 focus:ring-sky-500"
+                  :class="{ 'border-red-500 dark:border-red-500': subsError }"
+                  v-model="subsText"
+                  @input="validateSubs"
+                ></textarea>
+                <p v-if="subsError" class="text-sm text-red-500">{{ subsError }}</p>
+              </div>
 
               <label for="filename" class="text-gray-700 dark:text-gray-300 font-medium sm:pt-2">Filename:</label>
-              <textarea id="filename" class="w-full min-h-[60px] rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:border-sky-500 focus:ring-sky-500"
-                v-model="filename"></textarea>
+              <div class="space-y-1">
+                <textarea 
+                  id="filename" 
+                  class="w-full min-h-[60px] rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:border-sky-500 focus:ring-sky-500"
+                  :class="{ 'border-red-500 dark:border-red-500': filenameError }"
+                  v-model.trim="filename"
+                  @input="validateFilename"
+                ></textarea>
+                <p v-if="filenameError" class="text-sm text-red-500">{{ filenameError }}</p>
+              </div>
             </section>
 
             <hr class="my-6 border-gray-200 dark:border-gray-700" />
@@ -58,31 +83,46 @@
                 <input id="outurl" type="text" class="w-full p-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg border-gray-300 dark:border-gray-600" disabled v-model="url" />
               </div>
 
-              <div class="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 mt-4">
-                <button type="button" class="btn-secondary w-full sm:w-auto" @click="copy">
+              <div class="flex flex-row justify-end gap-3 sm:gap-4 mt-4">
+                <button 
+                  type="button" 
+                  class="btn-primary w-full sm:w-auto" 
+                  @click="copy"
+                  :disabled="!isFormValid"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
                     <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                   </svg>
                   Copy URL
                 </button>
-                <a :href="url" class="btn-secondary w-full sm:w-auto text-center" @click="download">
+                <a 
+                  :href="url" 
+                  class="btn-secondary w-full sm:w-auto text-center" 
+                  @click="download"
+                  :class="{ 'pointer-events-none': !isFormValid }"
+                  :disabled="!isFormValid"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                   </svg>
                   Download
                 </a>
+                <button 
+                  type="button" 
+                  class="btn-primary w-full sm:w-auto" 
+                  @click="generate"
+                  :disabled="!isFormValid"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  Generate
+                </button>
               </div>
             </section>
 
-            <div class="flex justify-center mt-8">
-              <button type="button" class="btn-primary w-full sm:w-auto" @click="generate">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-                Generate
-              </button>
-            </div>
+            <hr class="my-6 border-gray-200 dark:border-gray-700" />
           </form>
         </section>
       </main>
@@ -94,11 +134,107 @@
 import { ref, computed, onMounted } from 'vue'
 import { digest } from '../fun';
 
-const subs = ref([])
 const profile = ref('')
+const profileError = ref('')
 const filename = ref('')
+const filenameError = ref('')
 const url = ref('')
 const theme = ref('system')
+
+// Separate refs for subs text input and processed array
+const subsText = ref('')
+const subs = ref([])
+const subsError = ref('')
+
+// URL validation regex
+const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
+
+// Computed property for overall form validity
+const isFormValid = computed(() => {
+  validateProfile()
+  validateSubs()
+  validateFilename()
+  return !profileError.value && !subsError.value && !filenameError.value &&
+         profile.value && subs.value.length > 0 && filename.value
+})
+
+// Profile validation
+function validateProfile() {
+  try {
+    if (!profile.value) {
+      profileError.value = 'Profile is required'
+      return
+    }
+    JSON.parse(profile.value)
+    profileError.value = ''
+  } catch (e) {
+    profileError.value = 'Invalid JSON format'
+  }
+}
+
+// Subs validation
+function validateSubs() {
+  if (!subsText.value) {
+    subsError.value = 'At least one subscription URL is required'
+    subs.value = []
+    return
+  }
+
+  const urls = subsText.value.split('\n').filter(url => url.trim())
+  const invalidUrls = urls.filter(url => !urlRegex.test(url.trim()))
+
+  if (invalidUrls.length > 0) {
+    subsError.value = `Invalid URL format: ${invalidUrls.join(', ')}`
+    subs.value = []
+  } else if (urls.length === 0) {
+    subsError.value = 'At least one subscription URL is required'
+    subs.value = []
+  } else {
+    subsError.value = ''
+    subs.value = urls
+  }
+}
+
+// Filename validation
+function validateFilename() {
+  if (!filename.value) {
+    filenameError.value = 'Filename is required'
+    return
+  }
+  
+  const invalidChars = /[<>:"/\\|?*\x00-\x1F]/
+  if (invalidChars.test(filename.value)) {
+    filenameError.value = 'Filename contains invalid characters'
+    return
+  }
+  
+  if (filename.value.length > 255) {
+    filenameError.value = 'Filename is too long'
+    return
+  }
+  
+  filenameError.value = ''
+}
+
+// Form submission handler
+function handleSubmit() {
+  if (isFormValid.value) {
+    generate()
+  }
+}
+
+onMounted(() => {
+  // Theme initialization
+  const savedTheme = localStorage.getItem('theme') || 'system'
+  theme.value = savedTheme
+  updateTheme()
+  
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (theme.value === 'system') {
+      updateTheme()
+    }
+  })
+})
 
 // Computed property to determine if dark mode should be active
 const isDarkMode = computed(() => {
@@ -106,22 +242,6 @@ const isDarkMode = computed(() => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches
   }
   return theme.value === 'dark'
-})
-
-onMounted(() => {
-  // Get saved theme preference
-  const savedTheme = localStorage.getItem('theme') || 'system'
-  theme.value = savedTheme
-  
-  // Apply initial theme
-  updateTheme()
-  
-  // Listen for system theme changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (theme.value === 'system') {
-      updateTheme()
-    }
-  })
 })
 
 function updateTheme() {
@@ -175,11 +295,33 @@ async function generate() {
 
 <style>
 .btn-primary {
-  @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors duration-200;
+  @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm 
+    text-white bg-sky-600 
+    hover:bg-sky-700 
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 
+    transition-colors duration-200
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-sky-600;
+}
+
+.btn-primary[disabled], .btn-primary.disabled {
+  @apply opacity-50 cursor-not-allowed hover:bg-sky-600;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors duration-200;
+  @apply inline-flex items-center justify-center px-4 py-2 text-base font-medium rounded-lg shadow-sm 
+    border border-gray-300 dark:border-gray-600
+    text-gray-700 dark:text-gray-300
+    bg-white dark:bg-gray-800
+    hover:bg-gray-50 dark:hover:bg-gray-700
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 dark:focus:ring-offset-gray-800
+    transition-colors duration-200;
+}
+
+.btn-secondary[disabled], .btn-secondary.disabled {
+  @apply opacity-50 cursor-not-allowed 
+    hover:bg-white dark:hover:bg-gray-800
+    border-gray-200 dark:border-gray-700
+    text-gray-400 dark:text-gray-500;
 }
 
 #container {

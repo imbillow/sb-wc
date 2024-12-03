@@ -1,48 +1,68 @@
-# Astro Starter Kit: Basics
+# SBC - Subscription Converter
 
-```sh
-npm create astro@latest -- --template basics
+A modern web application for converting subscription formats, built with Astro and Vue.js.
+
+## 🚀 Features
+
+- 🎨 Modern, responsive UI with dark mode support
+- ✨ Real-time validation for all inputs
+- 🔄 System theme integration
+- 📱 Progressive Web App (PWA) support
+- 🌐 URL and JSON validation
+- 💾 Local storage for theme preferences
+
+## 🛠️ Tech Stack
+
+- [Astro](https://astro.build) - Static Site Generator
+- [Vue.js](https://vuejs.org) - UI Framework
+- [Tailwind CSS](https://tailwindcss.com) - Styling
+- PWA Support
+
+## 🚦 Getting Started
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/sbc.git
+cd sbc
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+2. Install dependencies:
+```bash
+npm install
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+3. Start the development server:
+```bash
+npm run dev
+```
 
-## 🧞 Commands
+Visit `http://localhost:4321` to see the app.
 
-All commands are run from the root of the project, from a terminal:
+## 📦 Build
+
+Build for production:
+```bash
+npm run build
+```
+
+Preview the build:
+```bash
+npm run preview
+```
+
+## 🧞 Available Commands
 
 | Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| :----------------------- | :----------------------------------------------- |
+| `npm install`            | Installs dependencies                            |
+| `npm run dev`            | Starts local dev server at `localhost:4321`      |
+| `npm run build`          | Build production site to `./dist/`               |
+| `npm run preview`        | Preview production build locally                 |
 
-## 👀 Want to learn more?
+## 🎯 Usage
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. Enter your profile JSON in the Profile field
+2. Add subscription URLs in the Subs field
+3. Specify a filename
+4. Click Generate to create your subscription
+5. Use Copy URL or Download to get your subscription
