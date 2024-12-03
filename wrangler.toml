@@ -11,6 +11,9 @@ assets = { directory = "./dist", binding = "ASSETS" }
 [observability]
 enabled = true
 
+[placement]
+mode = "smart"
+
 [[kv_namespaces]]
 binding = "sb"
 id = "d0e576b655b84a8683038f4fd3245057"

@@ -2,6 +2,7 @@ import SBC from "../components/SBC.vue";
 
 type SBCBody = {
     profile: string;
+    filename: string;
     subs: Array<string>;
 }
 
@@ -32,7 +33,7 @@ async function sbc(body: SBCBody) {
         return new Response(fileBlob, {
             headers: {
                 'Content-Type': 'application/octet-stream',
-                'Content-Disposition': `attachment; filename="merged_profile.json"`
+                'Content-Disposition': `attachment; filename="${body.filename}"`
             }
         });
     } catch (e) {
