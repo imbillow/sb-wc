@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="512" height="512" rx="128" fill="#0EA5E9"/>
+    
+    <!-- Arrows representing conversion -->
+    <path d="M256 96L352 192H288V320H224V192H160L256 96Z" fill="white"/>
+    <path d="M256 416L160 320H224V192H288V320H352L256 416Z" fill="white" fill-opacity="0.8"/>
+    
+    <!-- S letter -->
+    <path d="M226 156C226 144.954 234.954 136 246 136H266C277.046 136 286 144.954 286 156V176C286 187.046 277.046 196 266 196H246C234.954 196 226 187.046 226 176V156Z" fill="white"/>
+    
+    <!-- B letter -->
+    <path d="M226 336C226 324.954 234.954 316 246 316H266C277.046 316 286 324.954 286 336V356C286 367.046 277.046 376 266 376H246C234.954 376 226 367.046 226 356V336Z" fill="white"/>
+    
+    <!-- C letter -->
+    <path d="M186 246C186 234.954 194.954 226 206 226H226C237.046 226 246 234.954 246 246V266C246 277.046 237.046 286 226 286H206C194.954 286 186 277.046 186 266V246Z" fill="white"/>
+</svg>
